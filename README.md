@@ -1,6 +1,6 @@
 # Weather App
 
-![Weather App](weather-app-screenshot.PNG)
+![Weather App](weather-app-screenshot.png)
 
 A simple weather application that allows users to check the current weather conditions of a city. The app uses the Weather by API-Ninjas API, available on [RapidAPI](https://rapidapi.com/apininjas/api/weather-by-api-ninjas).
 
