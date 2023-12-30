@@ -12,7 +12,7 @@ A simple weather application that allows users to check the current weather cond
 
 ## Demo
 
-Check out the live demo [here](#) 
+Check out the live demo [here](https://smitpadshala99.github.io/Weather-App/) 
 
 Clone the repository:
 
