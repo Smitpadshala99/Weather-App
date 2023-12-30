@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+    <style>
+        body {
+            background: url('https://source.unsplash.com/1600x900/?nature,weather') center/cover fixed no-repeat;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        p{
+            margin-top: 1px;
+            margin-bottom: 1px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #weatherInfo {
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        #weather-icon{
+            margin-bottom: 0px;
+        }
+
+        
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Weather App</h1>
+    <div class="form-group">
+        <label for="cityInput">Enter City Name:</label>
+        <input type="text" class="form-control" id="cityInput" placeholder="e.g., New York">
+    </div>
+    <button class="btn btn-primary" onclick="getWeather()">
+        <span id="cartAnimation">🌤️</span> Get Weather
+    </button>
+
+    <div id="weatherInfo"></div>
+
+    <footer>Developed by Smit Padshala</footer>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function getWeather() {
+        const cityInput = document.getElementById('cityInput').value;
+        const weatherInfo = document.getElementById('weatherInfo');
+        const body = document.body;
+
+        const apiKey = 'f697538498msh4d8ec8c4c807d57p170778jsn50338eb7e039';
+        const apiUrl = `https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=${cityInput}`;
+
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'f697538498msh4d8ec8c4c807d57p170778jsn50338eb7e039'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const {
+                cloud_pct,
+                temp,
+                feels_like,
+                humidity,
+                min_temp,
+                max_temp,
+                wind_speed,
+                wind_degrees,
+                sunrise,
+                sunset,
+                icon
+            } = data;
+
+            // Update background image based on temperature
+            body.style.backgroundImage = `url('https://source.unsplash.com/1600x900/?weather,${temp}')`;
+
+            weatherInfo.innerHTML = `
+                
+                <p><strong>Cloud Percentage:</strong> ${cloud_pct}%</p>
+                <p><strong>Temperature:</strong> ${temp}&deg;C</p>
+                <p><strong>Feels Like:</strong> ${feels_like}&deg;C</p>
+                <p><strong>Humidity:</strong> ${humidity}%</p>
+                <p><strong>Min Temperature:</strong> ${min_temp}&deg;C</p>
+                <p><strong>Max Temperature:</strong> ${max_temp}&deg;C</p>
+                <p><strong>Wind Speed:</strong> ${wind_speed} m/s</p>
+                <p><strong>Wind Degrees:</strong> ${wind_degrees}&deg;</p>
+                <p><strong>Sunrise:</strong> ${formatTime(sunrise)}</p>
+                <p><strong>Sunset:</strong> ${formatTime(sunset)}</p>
+            `;
+        })
+        .catch(error => {
+            console.error('Error fetching weather data:', error);
+            weatherInfo.innerHTML = '<p>Failed to fetch weather data. Please try again later.</p>';
+        });
+    }
+
+    function formatTime(timestamp) {
+        const date = new Date(timestamp * 1000);
+        const hours = date.getHours();
+        const minutes = "0" + date.getMinutes();
+        return hours + ':' + minutes.substr(-2);
+    }
+</script>
+
+</body>
+</html>
